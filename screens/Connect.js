@@ -18,9 +18,9 @@ class Connect extends React.Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount = async() => {
+        this.listenEvents()
         this.initTelephony()
-        // add listeners (flowtype notation)
     }
 
     listenEvents=()=>{
@@ -141,41 +141,25 @@ class Connect extends React.Component {
         //     })
     }
 
-    // async getAccessTokenFromServer(){
-    //     try {
-    //         const AccessToken = require('twilio').jwt.AccessToken;
-    //         const VoiceGrant = AccessToken.VoiceGrant;
-
-    //         // Create a "grant" which enables a client to use Voice as a given user
-    //         const voiceGrant = new VoiceGrant({
-    //             outgoingApplicationSid: outgoingApplicationSid,
-    //             incomingAllow: true, // Optional: add to allow incoming calls
-    //         });
-
-    //         // Create an access token which we will sign and return to the client,
-    //         // containing the grant we just created
-    //         const token = new AccessToken(
-    //             accountSid,
-    //             apiKey,
-    //             apiSecret,
-    //             {identity: 'user'}
-    //         );
-    //         token.addGrant(voiceGrant);
-
-    //         // Serialize the token to a JWT string
-    //         console.log(token.toJwt());
-    //         return token;
-    //     } catch (err) {
-    //         console.error(err)
-    //     }
-    // }
+    getAccessTokenFromServer() {
+        const url = "https://quickstart-3283-dev.twil.io/access-token";
+        return fetch(url)
+          .then(response => response.text())
+    
+          .catch(error => {
+            console.log(error);
+          });
+      }
 
     async initTelephony() {
         try {
-            const accessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImN0eSI6InR3aWxpby1mcGE7dj0xIn0.eyJqdGkiOiJTSzEzOGVkNDJmMDZmNjRmYzk2NzZiYmVkOGM4M2M0YjY0LTE2MTkzODgyODciLCJncmFudHMiOnsiaWRlbnRpdHkiOiJrYXRzdW4xNCIsInZvaWNlIjp7ImluY29taW5nIjp7ImFsbG93Ijp0cnVlfSwib3V0Z29pbmciOnsiYXBwbGljYXRpb25fc2lkIjoiQVA0NDc3OTE5ZTNhNjVkYjNlZThlNjEzZjFmZTM4MDBkNSJ9fX0sImlhdCI6MTYxOTM4ODI4NywiZXhwIjoxNjE5MzkxODg3LCJpc3MiOiJTSzEzOGVkNDJmMDZmNjRmYzk2NzZiYmVkOGM4M2M0YjY0Iiwic3ViIjoiQUNiMzE0MWJlMzcwMjA0MTY1ZGRjOTVmOGQ4NzQ1N2NkMSJ9.I_nW_dVxtQU3i7_FjJEO6vPE7zBYzOEMrU9xYRSyiLk'
+            const accessToken = await this.getAccessTokenFromServer()
             const success = await TwilioVoice.initWithToken(accessToken)
-            console.log("SUCCESS:")
+            console.log("Init with Token:")
             console.log(success)
+            TwilioVoice.configureCallKit({
+                appName: 'magpie-twilio-app'
+            })
         } catch (err) {
             console.error(err)
         }
@@ -185,7 +169,7 @@ class Connect extends React.Component {
        
         // start a call
         try {
-            const success = TwilioVoice.connect({To: '+14088059857'})
+            const success = TwilioVoice.connect({To: '+18004444444'})
             console.log("CALL:")
             console.log(success)
         } catch (err) {
