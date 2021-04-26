@@ -21,6 +21,10 @@ class Connection extends React.Component {
     render() {
         return (
             <View style={styles.container}>
+                <TouchIcon
+                    icon={<Feather name="chevron-left" />}
+                    onPress={() => this.props.navigation.goBack(null)}
+                />
                 <Text>Connection Screen</Text>
                 {/* <TextInput
                     style={styles.inputBox}

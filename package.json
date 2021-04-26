@@ -16,11 +16,14 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "~0.63.4",
+    "react-native-background-timer": "^2.4.1",
+    "react-native-callkeep": "^4.1.0",
     "react-native-dotenv": "^2.5.3",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "~3.0.0",
+    "react-native-twilio-programmable-voice": "^4.4.0",
     "react-native-unimodules": "~0.13.3",
     "react-native-web": "~0.13.12",
     "react-navigation": "^4.4.4",
@@ -28,11 +31,13 @@
     "react-navigation-tabs": "^2.11.0",
     "react-redux": "^7.2.3",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "twilio": "^3.60.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
     "babel-jest": "~25.2.6",
+    "crypto-js": "file:node_modules/crypto-js",
     "jest": "~25.2.6",
     "react-test-renderer": "~16.13.1"
   },
