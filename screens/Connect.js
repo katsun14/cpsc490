@@ -3,12 +3,38 @@ import { StyleSheet, Text, View, SafeAreaView, Button } from 'react-native'
 import { connect } from 'react-redux'
 import Firebase from '../config/Firebase'
 import TwilioVoice from 'react-native-twilio-programmable-voice'
+import { RNTwilioPhone } from 'react-native-twilio-phone'
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const apiKey = process.env.TWILIO_API_KEY;
 const apiSecret = process.env.TWILIO_API_SECRET;
 const outgoingApplicationSid = process.env.TWILIO_APP_SID;
+const client = require('twilio')(accountSid, authToken);
+
+const callKeepOptions = {
+    ios: {
+      appName: 'magpie-twilio-app',
+      supportsVideo: false,
+    },
+    android: {
+      alertTitle: 'Permissions required',
+      alertDescription: 'This application needs to access your phone accounts',
+      cancelButton: 'Cancel',
+      okButton: 'OK',
+      additionalPermissions: [],
+      // Required to get audio in background when using Android 11
+      foregroundService: {
+        channelId: 'com.example.reactnativetwiliophone',
+        channelName: 'Foreground service for my app',
+        notificationTitle: 'My app is running on background',
+      },
+    },
+  };
+
+const options = {
+    requestPermissionsOnInit: true, // Default: true - Set to false if you want to request permissions manually
+};
 
 class Connect extends React.Component {
     constructor(props){
@@ -18,11 +44,13 @@ class Connect extends React.Component {
         }
     }
 
+    
     componentDidMount = async() => {
-        this.listenEvents()
+        //this.listenEvents()
         this.initTelephony()
     }
 
+    /*
     listenEvents=()=>{
         TwilioVoice.addEventListener('deviceReady', function() {
             // no data
@@ -148,18 +176,29 @@ class Connect extends React.Component {
     
           .catch(error => {
             console.log(error);
-          });
+        });
+    }
+    */
+
+    async fetchAccessToken() {
+        const response = await fetch(
+          'https://quickstart-3283-dev.twil.io/access-token'
+        );
+        const accessToken = await response.text();
+      
+        return accessToken;
       }
 
     async initTelephony() {
         try {
-            const accessToken = await this.getAccessTokenFromServer()
-            const success = await TwilioVoice.initWithToken(accessToken)
-            console.log("Init with Token:")
-            console.log(success)
-            TwilioVoice.configureCallKit({
-                appName: 'magpie-twilio-app'
-            })
+            // const accessToken = await this.getAccessTokenFromServer()
+            // const success = await TwilioVoice.initWithToken(accessToken)
+            // console.log("Init with Token:")
+            // console.log(success)
+            // TwilioVoice.configureCallKit({
+            //     appName: 'magpie-twilio-app'
+            // })
+            return RNTwilioPhone.initializeCallKeep(callKeepOptions, fetchAccessToken, options);
         } catch (err) {
             console.error(err)
         }
@@ -169,9 +208,23 @@ class Connect extends React.Component {
        
         // start a call
         try {
-            const success = TwilioVoice.connect({To: '+18004444444'})
-            console.log("CALL:")
-            console.log(success)
+            console.log("Hello")
+            console.log(accountSid);
+            console.log(authToken);
+            client.outgoingCallerIds.list({limit: 20})
+                .then(outgoingCallerIds => outgoingCallerIds.forEach(o => console.log(o.sid)));
+            client.calls
+                .create({
+                    url: 'https://quickstart-3283-dev.twil.io/make-call',
+                    to: '+14088059857',
+                    from: '+13478919961'
+                })
+                .then(call => console.log(call.sid));
+            // await RNTwilioPhone.startCall('+14088059857');
+
+            // const success = TwilioVoice.connect({To: '+14088059857'})
+            // console.log("CALL:")
+            // console.log(success)
         } catch (err) {
             console.error(err)
         }
