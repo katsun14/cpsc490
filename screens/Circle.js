@@ -15,14 +15,18 @@ class Circle extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <TouchIcon
-                    icon={<Feather name="chevron-left" />}
-                    onPress={() => this.props.navigation.goBack(null)}
-                />
-                <Text>Circle Screen</Text>
-                <Text>{this.props.user.email}</Text>
+                <View style={styles.containerTouchIcon}>
+                    <TouchIcon
+                        icon={<Feather name="chevron-left" />}
+                        onPress={() => this.props.navigation.goBack(null)}
+                    />
+                </View>
+                <Text style={styles.text}>
+                    Connections
+                </Text>
                 <Button
                     title="Add someone"
+                    color="#1ecbe1"
                     onPress={() => this.props.navigation.navigate('Connection')}
                 />
                 <Animated.ScrollView
@@ -40,6 +44,7 @@ class Circle extends React.Component {
                         this.props.user.connections.map((connection, index) => (
                             <LineItemConnection
                             name={connection}
+                            key={index.toString()}
                             />
                         ))}
                     </View>
@@ -55,14 +60,22 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: 89
+        paddingTop: 80,
     },
     containerConnections: {
         alignItems: 'center',
-        minHeight: 540
+        minHeight: 540,
     },
     containerScroll: {
-        paddingTop: 20
+        marginTop: 5,
+    },
+    containerTouchIcon: {
+        alignSelf: "flex-start",
+        padding: 10,
+    },
+    text: {
+        fontSize: 24,
+        padding: 10
     },
 })
 

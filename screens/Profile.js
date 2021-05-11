@@ -12,9 +12,11 @@ class Profile extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>Profile Screen</Text>
-                <Text>{this.props.user.email}</Text>
-                <Button title='Logout' onPress={this.handleSignout} />
+                <Text style={styles.title}>
+                    Profile
+                </Text>
+                <Text style={styles.text}>Welcome, {this.props.user.email}</Text>
+                <Button title='Logout' color="#1ecbe1" onPress={this.handleSignout} />
             </View>
         )
     }
@@ -25,8 +27,18 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center'
-    }
+        paddingTop: 80,
+    },
+    title: {
+        textAlign: 'center',
+        fontSize: 24,
+        padding: 10,
+    },
+    text: {
+        fontSize: 18,
+        paddingBottom: 15,
+        paddingTop: 175
+    },
 })
 
 const mapStateToProps = state => {

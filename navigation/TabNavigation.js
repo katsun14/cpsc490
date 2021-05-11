@@ -20,15 +20,15 @@ const BottomTabNavigator = createBottomTabNavigator(
   {
     initialRouteName: 'StackConnect',
     //tabBarComponent: (props) => <CustomTabBar {...props} />,
-    // tabBarOptions: {
-    //   activeTintColor: colors.white,
-    //   inactiveTintColor: colors.greyInactive,
-    //   style: {
-    //     backgroundColor: colors.grey,
-    //     borderTopWidth: 0
-    //   }
-    // }
-  }
+    tabBarOptions: {
+      activeTintColor: "#000000",
+      // inactiveTintColor: "#000000",
+      // style: {
+      //   backgroundColor: "#ffffff",
+      //   borderTopWidth: 0
+      // }
+    }
+  },
 );
 
 export default BottomTabNavigator;

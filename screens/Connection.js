@@ -21,11 +21,13 @@ class Connection extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <TouchIcon
-                    icon={<Feather name="chevron-left" />}
-                    onPress={() => this.props.navigation.goBack(null)}
-                />
-                <Text>Connection Screen</Text>
+                <View style={styles.containerTouchIcon}>
+                    <TouchIcon
+                        icon={<Feather name="chevron-left" />}
+                        onPress={() => this.props.navigation.goBack(null)}
+                    />
+                </View>
+                <Text style={styles.text}>Add a new connection!</Text>
                 {/* <TextInput
                     style={styles.inputBox}
                     value={this.state.name}
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center'
+        paddingTop: 80,
     },
     inputBox: {
         width: '85%',
@@ -61,23 +63,30 @@ const styles = StyleSheet.create({
         fontSize: 16,
         borderColor: '#d3d3d3',
         borderBottomWidth: 1,
-        textAlign: 'center'
+        textAlign: 'center',
     },
     button: {
         marginTop: 30,
         marginBottom: 20,
         paddingVertical: 5,
         alignItems: 'center',
-        backgroundColor: '#EE1D52',
-        borderColor: '#EE1D52',
+        backgroundColor: '#1ecbe1',
+        borderColor: '#1ecbe1',
         borderWidth: 1,
         borderRadius: 5,
-        width: 200
+        width: 200,
     },
     buttonText: {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
         color: '#fff'
+    },
+    text: {
+        fontSize: 20,
+    },
+    containerTouchIcon: {
+        alignSelf: "flex-start",
+        padding: 10,
     },
 })
 
