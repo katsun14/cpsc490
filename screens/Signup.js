@@ -63,8 +63,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         paddingVertical: 5,
         alignItems: 'center',
-        backgroundColor: '#EE1D52',
-        borderColor: '#EE1D52',
+        backgroundColor: '#1ecbe1',
+        borderColor: '#1ecbe1',
         borderWidth: 1,
         borderRadius: 5,
         width: 200

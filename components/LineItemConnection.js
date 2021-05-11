@@ -1,32 +1,61 @@
-import * as React from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View, Switch } from 'react-native';
 import { Feather, Ionicons } from '@expo/vector-icons';
+import { toggleConnection } from '../actions/user'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import Firebase, { db } from '../config/Firebase.js'
+import firebase from "firebase/app"
 
 const LineItemConnection = ({ name }) => {
 
+  const [downloaded, setDownloaded] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async() => {
+      let currentUser = Firebase.auth().currentUser;
+      const querySnapshot = await db
+                  .collection('connections')
+                  .where('user1', '==', currentUser.email)
+                  .where('user2', '==', name)
+                  .get();
+      querySnapshot.forEach((doc) => {
+        console.log(doc.id, ' => ', doc.data());
+        setDownloaded(doc.data().online);
+      });
+    }
+    fetchData();
+  }, []);
+
+  toggleSwitch = async () => {
+    setDownloaded(previousState => !previousState);
+    let currentUser = Firebase.auth().currentUser;
+    let querySnapshot = await db
+                .collection('connections')
+                .where('user1', '==', currentUser.email)
+                .where('user2', '==', name)
+                .get();
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, ' => ', doc.data());
+      doc.ref.update({online: !downloaded});
+    });
+  }
+
   return (
     <View style={styles.container}>
-        <Text style={styles.title}>
+        <Text style={styles.text}>
           {name}
         </Text>
       <View style={styles.containerRight}>
-        <Feather name="more-horizontal" size={20} />
+        <Switch
+          onValueChange={toggleSwitch}
+          value={downloaded}
+        />
       </View>
     </View>
   );
 };
-
-// LineItemConnection.propTypes = {
-//   // required
-//   name: PropTypes.shape({
-//     name: PropTypes.string.isRequired,
-//     artist: PropTypes.string.isRequired,
-//     image: PropTypes.string.isRequired,
-//     length: PropTypes.number.isRequired,
-//     title: PropTypes.string.isRequired
-//   }).isRequired,
-// };
 
 const styles = StyleSheet.create({
   container: {
@@ -36,13 +65,16 @@ const styles = StyleSheet.create({
     padding: 16,
     width: '100%'
   },
-  title: {
-    marginBottom: 4
+  text: {
+    fontSize: 18,
+    paddingLeft: 8,
+    paddingTop: 5,
   },
   containerRight: {
     alignItems: 'flex-end',
-    flex: 1
-  }
+    flex: 1,
+    paddingRight: 5,
+  },
 });
 
 export default LineItemConnection;

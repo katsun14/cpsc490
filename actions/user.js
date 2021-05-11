@@ -92,6 +92,8 @@ export const addConnection = (email) => {
                 alert("This user doesn't exist");
             } else {
                 let currentUser = Firebase.auth().currentUser
+
+                // Update Users
                 let userDoc = db.collection("users").doc(currentUser.uid)
                 if (userDoc.connections != []){
                     userDoc.update({
@@ -102,9 +104,46 @@ export const addConnection = (email) => {
                         connections: [email]
                     })
                 }
+                
+                // Update Connections
+                db.collection("connections").add({
+                    user1: currentUser.email,
+                    user2: email,
+                    online: false
+                })
+                db.collection("connections").add({
+                    user1: email,
+                    user2: currentUser.email,
+                    online: false
+                })
+
             }
         } catch (e) {
             alert(e)
         }
     }
 }
+
+// export const toggleConnection = (email, downloaded) => {
+//     return async (dispatch, getState) => {
+//         try {
+//             console.log("Toggling connection:")
+//             console.log(email)
+//             console.log(downloaded)
+
+//             // let currentUser = Firebase.auth().currentUser
+//             // let userDoc = db.collection("users").doc(currentUser.uid)
+//             // if (userDoc.connections != []){
+//             //     userDoc.update({
+//             //         connections: firebase.firestore.FieldValue.arrayUnion(email)
+//             //     })
+//             // } else {
+//             //     userDoc.update({
+//             //         connections: [email]
+//             //     })
+//             // }
+//         } catch (e) {
+//             alert(e)
+//         }
+//     }
+// }
